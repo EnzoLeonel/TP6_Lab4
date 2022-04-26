@@ -28,4 +28,5 @@ const instrumento = __importStar(require("../controllers/InstrumentoCtrl"));
 const router = (0, express_1.Router)();
 router.get('/api/instrumentos', instrumento.getInstrumentos);
 router.get('/api/instrumentos/:id', instrumento.getInstrumentoXID);
+router.post('/api/instrumentos/insert', instrumento.insertInstrumento);
 exports.default = router;

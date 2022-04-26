@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInstrumentoXID = exports.getInstrumentos = void 0;
+exports.insertInstrumento = exports.getInstrumentoXID = exports.getInstrumentos = void 0;
 const db_1 = require("../database/db");
 const getInstrumentos = (_req, res) => new Promise((_resolve, _reject) => {
     db_1.cxMysql.getConnection((err, connection) => {
@@ -35,3 +35,27 @@ const getInstrumentoXID = (req, res) => new Promise((resolve, reject) => {
     });
 });
 exports.getInstrumentoXID = getInstrumentoXID;
+const insertInstrumento = (req, res) => new Promise((resolve, reject) => {
+    const { instrumento, marca, modelo, imagen, precio, costoEnvio, cantidadVendida, descripcion } = req.body;
+    var values = [instrumento, marca, modelo, imagen, precio, costoEnvio, cantidadVendida, descripcion];
+    db_1.cxMysql.getConnection((err, connection) => {
+        if (err) {
+            console.error(err);
+            res.send(err);
+            return;
+        }
+        else {
+            let sql = 'INSERT INTO instrumento(instrumento, marca, modelo, imagen, precio, costoEnvio, cantidadVendida, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            connection.query(sql, values, (err, results) => {
+                if (err) {
+                    console.error(err);
+                    res.json({ message: "Error al tratar de insertar" });
+                }
+                else {
+                    res.json({ message: "Instrumento Insertado con exito" });
+                }
+            });
+        }
+    });
+});
+exports.insertInstrumento = insertInstrumento;
