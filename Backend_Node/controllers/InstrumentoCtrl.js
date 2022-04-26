@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInstrumentos = void 0;
+exports.getInstrumentoXID = exports.getInstrumentos = void 0;
 const db_1 = require("../database/db");
 const getInstrumentos = (_req, res) => new Promise((_resolve, _reject) => {
     db_1.cxMysql.getConnection((err, connection) => {
@@ -19,3 +19,19 @@ const getInstrumentos = (_req, res) => new Promise((_resolve, _reject) => {
     });
 });
 exports.getInstrumentos = getInstrumentos;
+const getInstrumentoXID = (req, res) => new Promise((resolve, reject) => {
+    const idArt = parseInt(req.params.id);
+    db_1.cxMysql.getConnection((err, connection) => {
+        if (err) {
+            console.error(err);
+            res.send(err);
+            return;
+        }
+        connection.query('SELECT * FROM instrumento WHERE id = ?', [idArt], (err, results) => {
+            if (err)
+                console.error(err);
+            res.send(results);
+        });
+    });
+});
+exports.getInstrumentoXID = getInstrumentoXID;

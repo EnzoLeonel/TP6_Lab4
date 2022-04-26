@@ -17,3 +17,17 @@ export const getInstrumentos = (_req:Request, res:Response) => new Promise((_res
     });
 });
 
+export const getInstrumentoXID = (req:Request, res:Response) => new Promise((resolve, reject) => {
+  const idArt = parseInt(req.params.id);
+  cxMysql.getConnection((err, connection) => {
+      if (err){
+        console.error(err);
+        res.send(err);
+        return;
+      } 
+      connection.query('SELECT * FROM instrumento WHERE id = ?', [idArt], (err, results) => {
+        if (err) console.error(err);
+        res.send(results)
+      });
+    });
+});
