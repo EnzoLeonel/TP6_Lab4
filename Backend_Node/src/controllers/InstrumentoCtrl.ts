@@ -55,3 +55,45 @@ export const insertInstrumento = (req:Request, res:Response) => new Promise((res
       }          
     });
 });
+
+export const actualizarInstrumento = (req:Request, res:Response) => new Promise((resolve, reject) => {
+  const {instrumento, marca, modelo, imagen, precio, costoEnvio, cantidadVendida, descripcion, id} = req.body;
+  var values = [instrumento, marca, modelo, imagen, precio, costoEnvio, cantidadVendida, descripcion, id];
+  cxMysql.getConnection((err, connection) => {
+      if (err) {
+          console.error(err);
+          res.send(err);
+          return;
+      }
+      else{
+          let sql:string = 'UPDATE instrumento SET instrumento=?, marca=?, modelo=?, imagen=?, precio=?, costoEnvio=?, cantidadVendida=?, descripcion=? WHERE id=?';
+          connection.query(sql, values, (err, results) => {
+              if (err) {
+                console.error(err);
+                res.json({message:"Error al actualizar " + err});
+              }else{
+                res.json({message:"Instrumento Actualizado con exito"});
+              }
+            });
+      }          
+    });
+});
+
+export const eliminarInstrumento = (req:Request, res:Response) => new Promise((resolve, reject) => {
+  const idArt = parseInt(req.params.id);
+  cxMysql.getConnection((err, connection) => {
+        if (err) {
+          console.error(err);
+          res.send(err);
+          return;
+        }
+        connection.query('DELETE FROM instrumento WHERE id = ?', [idArt],(err, results) => {
+        if (err) {
+          console.error(err);
+          res.json({message:"Error al tratar de Eliminar"})
+        }else{
+          res.json({message:"Instrumento Eliminado con exito"})
+        }
+      });
+    });
+});
