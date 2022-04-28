@@ -10,7 +10,7 @@ const getInstrumentos = (_req, res) => new Promise((_resolve, _reject) => {
             return;
         }
         console.log('MySQL Connection: ', connection.threadId);
-        connection.query('SELECT * FROM instrumento', (err, results) => {
+        connection.query('SELECT * FROM instrumento LIMIT 50', (err, results) => {
             if (err)
                 console.error(err);
             //console.log('User Query Results: ', results);
