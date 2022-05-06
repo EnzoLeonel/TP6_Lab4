@@ -3,6 +3,10 @@ import http from 'http';
 const app = express();
 import routes from "./routes/instrumento";
 
+// ADD THIS
+var cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
